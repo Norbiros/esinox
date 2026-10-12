@@ -1,0 +1,22 @@
+catalogs:
+  # Build, test, lint, and type-check the library's source code.
+  toolchain:
+    '@types/node': ^22.9.4
+    typescript: 7.0.2
+    # Keep Vite Plus and its core on the same version.
+    vite: npm:@voidzero-dev/vite-plus-core@1.0.0
+    vite-plus: 1.0.0
+  # Validate the package artifact and publish releases or previews.
+  publish:
+    '@arethetypeswrong/core': 0.18.5
+    pkg-pr-new: 0.0.91
+    publint: 0.3.25
+  # Dependencies installed for consumers of the library (dependencies).
+  runtime: {}
+  # Dependencies deliberately bundled into the output (usually devDependencies).
+  inlined: {}
+overrides:
+  vite@*: 'catalog:toolchain'
+peerDependencyRules:
+  allowAny:
+    - vite
