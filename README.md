@@ -1,6 +1,8 @@
-# Esinox
+# ESinOxc
 
 🐂 Run ESLint plugins inside oxlint.
+
+**esinoxc** (/iː-ɛs-ɪn-oʊ-ɛks-siː/) stands for [**ES**Lint](https://eslint.org) **in** [**Oxc**](https://oxc.rs).
 
 ## Development
 

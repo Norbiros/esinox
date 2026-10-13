@@ -1,16 +1,16 @@
 {
-  "name": "esinox",
+  "name": "esinoxc",
   "version": "0.0.0",
   "description": "Eslint plugins runner for oxlint.",
-  "homepage": "https://github.com/Norbiros/esinox#readme",
+  "homepage": "https://github.com/Norbiros/esinoxc#readme",
   "bugs": {
-    "url": "https://github.com/Norbiros/esinox/issues"
+    "url": "https://github.com/Norbiros/esinoxc/issues"
   },
   "license": "MIT",
   "author": "Norbiros <norbiros@protonmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Norbiros/esinox.git"
+    "url": "git+https://github.com/Norbiros/esinoxc.git"
   },
   "files": [
     "dist"
