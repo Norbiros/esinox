@@ -17,6 +17,7 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true, denyWarnings: true },
   },
   fmt: { singleQuote: true, semi: false },
+  test: { include: ['tests/**/*.test.ts'] },
   staged: {
     '*': 'vp check --fix',
   },

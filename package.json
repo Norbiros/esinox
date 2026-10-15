@@ -1,7 +1,7 @@
 {
   "name": "esinoxc",
   "version": "0.0.0",
-  "description": "Eslint plugins runner for oxlint.",
+  "description": "Run ESLint plugins inside oxlint.",
   "homepage": "https://github.com/Norbiros/esinoxc#readme",
   "bugs": {
     "url": "https://github.com/Norbiros/esinoxc/issues"
@@ -31,14 +31,22 @@
     "prepare": "vp config",
     "prepack": "vpr build"
   },
+  "dependencies": {
+    "@oxlint/plugins": "catalog:runtime",
+    "eslint": "catalog:runtime"
+  },
   "devDependencies": {
     "@arethetypeswrong/core": "catalog:publish",
     "@types/node": "catalog:toolchain",
+    "oxlint": "catalog:toolchain",
     "pkg-pr-new": "catalog:publish",
     "publint": "catalog:publish",
     "typescript": "catalog:toolchain",
     "vite": "catalog:toolchain",
     "vite-plus": "catalog:toolchain"
+  },
+  "peerDependencies": {
+    "oxlint": ">=1.85.0"
   },
   "engines": {
     "node": "^22.19.0 || ^24.11.0 || >=26.0.0"

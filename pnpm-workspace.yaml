@@ -1,22 +1,30 @@
+packages:
+  - examples/*
+
 catalogs:
-  # Build, test, lint, and type-check the library's source code.
   toolchain:
     '@types/node': ^22.9.4
+    # 1.87.0 plus oxc#20501 and actualText fix, built in Norbiros/oxc
+    oxlint: https://github.com/Norbiros/oxc/releases/download/esinox-poc-1/oxlint-1.87.0-esinox-poc.tgz
     typescript: 7.0.2
     # Keep Vite Plus and its core on the same version.
     vite: npm:@voidzero-dev/vite-plus-core@1.0.0
     vite-plus: 1.0.0
-  # Validate the package artifact and publish releases or previews.
   publish:
     '@arethetypeswrong/core': 0.18.5
     pkg-pr-new: 0.0.91
     publint: 0.3.25
-  # Dependencies installed for consumers of the library (dependencies).
-  runtime: {}
-  # Dependencies deliberately bundled into the output (usually devDependencies).
+  runtime:
+    '@oxlint/plugins': ^1.87.0
+    eslint: ^10.12.0
+  examples:
+    eslint-plugin-vue: ^10.11.1
+    vue-eslint-parser: ^10.4.1
   inlined: {}
 overrides:
   vite@*: 'catalog:toolchain'
 peerDependencyRules:
   allowAny:
     - vite
+    # Installed from a tarball, which pnpm cannot match against esinoxc's semver range.
+    - oxlint

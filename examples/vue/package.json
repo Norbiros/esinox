@@ -1,0 +1,14 @@
+{
+  "name": "@esinoxc/example-vue",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint"
+  },
+  "devDependencies": {
+    "esinoxc": "workspace:*",
+    "eslint-plugin-vue": "catalog:examples",
+    "oxlint": "catalog:toolchain",
+    "vue-eslint-parser": "catalog:examples"
+  }
+}
