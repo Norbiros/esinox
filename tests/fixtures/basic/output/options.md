@@ -4,16 +4,16 @@
 # stdout
 ```
 
-  x mini(no-name): Unexpected bar.
-   ,-[options.js:2:7]
+  x basic(no-name): Unexpected bar.
+   ,-[input/options.js:2:7]
  1 | const foo = 1
  2 | const bar = foo
    :       ^^^
  3 | console.log(bar)
    `----
 
-  x mini(no-name): Unexpected bar.
-   ,-[options.js:3:13]
+  x basic(no-name): Unexpected bar.
+   ,-[input/options.js:3:13]
  2 | const bar = foo
  3 | console.log(bar)
    :             ^^^

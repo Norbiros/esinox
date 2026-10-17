@@ -25,13 +25,5 @@ export default {
         },
       }),
     },
-    'no-marquee': {
-      create: (context) =>
-        context.sourceCode.parserServices.defineTemplateBodyVisitor?.({
-          'VElement[name="marquee"]'(node) {
-            context.report({ node, message: 'Unexpected <marquee>.' })
-          },
-        }) ?? {},
-    },
   },
 }

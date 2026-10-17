@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite-plus'
 
 // Kept byte for byte and linted by their own configs in the tests.
-const fixtureInputs = ['tests/fixtures/*/*.js', 'tests/fixtures/*/*.vue']
+const fixtureInputs = ['tests/fixtures/*/{input,output}/*']
 
 export default defineConfig({
   pack: {
