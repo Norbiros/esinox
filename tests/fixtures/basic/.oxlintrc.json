@@ -1,0 +1,12 @@
+{
+  "categories": { "correctness": "off" },
+  "jsPlugins": [{ "name": "basic", "specifier": "./plugin.mjs" }],
+  "rules": { "basic/no-foo": "error" },
+  "overrides": [
+    {
+      "files": ["input/options.js"],
+      "rules": { "basic/no-foo": "off", "basic/no-name": ["error", "bar"] }
+    },
+    { "files": ["input/negative-column.js"], "rules": { "basic/no-file-start": "error" } }
+  ]
+}

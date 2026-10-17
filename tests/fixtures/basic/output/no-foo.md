@@ -4,15 +4,15 @@
 # stdout
 ```
 
-  x mini(no-foo): Unexpected foo.
-   ,-[no-foo.js:1:7]
+  x basic(no-foo): Unexpected foo.
+   ,-[input/no-foo.js:1:7]
  1 | const foo = 1
    :       ^^^
  2 | console.log(foo)
    `----
 
-  x mini(no-foo): Unexpected foo.
-   ,-[no-foo.js:2:13]
+  x basic(no-foo): Unexpected foo.
+   ,-[input/no-foo.js:2:13]
  1 | const foo = 1
  2 | console.log(foo)
    :             ^^^

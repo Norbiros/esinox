@@ -4,10 +4,11 @@
 # stdout
 ```
 
-  x mini(no-file-start): Unexpected file start.
-   ,-[negative-column.js:1:1]
- 1 | console.log('hello')
-   : ^
+  x basic(no-foo): Unexpected foo.
+   ,-[input/disable-comments.js:3:16]
+ 2 | const foo = 1
+ 3 | export default foo
+   :                ^^^
    `----
 
 Found 0 warnings and 1 error.
