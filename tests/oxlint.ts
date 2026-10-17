@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url'
 
 export const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '')
 
-/** Runs the oxlint that `cwd` resolves and formats its output for a snapshot. */
 export function runOxlint(cwd: string, args: string[] = []): string {
   const packageJson = createRequire(join(cwd, 'package.json')).resolve('oxlint/package.json')
   const result = spawnSync(
