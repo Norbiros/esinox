@@ -1,4 +1,3 @@
-// A tiny ESLint plugin for fixtures, so their output does not depend on real plugins' messages.
 export default {
   rules: {
     'no-foo': {
