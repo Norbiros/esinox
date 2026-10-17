@@ -10,7 +10,6 @@
     "esinoxc": "workspace:*",
     "eslint-plugin-vue": "catalog:examples",
     "oxlint": "catalog:toolchain",
-    "typescript": "catalog:examples",
-    "vue-eslint-parser": "catalog:examples"
+    "typescript": "catalog:examples"
   }
 }

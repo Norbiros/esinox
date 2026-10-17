@@ -38,13 +38,13 @@
   "devDependencies": {
     "@arethetypeswrong/core": "catalog:publish",
     "@types/node": "catalog:toolchain",
+    "eslint-plugin-vue": "catalog:examples",
     "oxlint": "catalog:toolchain",
     "pkg-pr-new": "catalog:publish",
     "publint": "catalog:publish",
     "typescript": "catalog:toolchain",
     "vite": "catalog:toolchain",
-    "vite-plus": "catalog:toolchain",
-    "vue-eslint-parser": "catalog:examples"
+    "vite-plus": "catalog:toolchain"
   },
   "peerDependencies": {
     "oxlint": ">=1.85.0"

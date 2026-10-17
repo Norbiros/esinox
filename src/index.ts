@@ -8,7 +8,11 @@ export interface EsinoxOptions {
   /** Must match the alias the plugin is loaded under in `jsPlugins`. */
   name: string
   plugin: ESLint.Plugin
-  languageOptions?: Linter.LanguageOptions
+  /**
+   * ESLint config the plugin needs to run, usually its base preset. Rules should not be
+   * configured here, but in the oxlint config directly.
+   */
+  config?: Linter.Config[]
 }
 
 // Whole-file offsets from oxc#20501, not in the published types yet.
@@ -134,10 +138,10 @@ function runEslint(
   return linter.verify(
     text,
     [
+      ...(options.config ?? []),
       {
         files: [`**/*${extname(filename)}`],
         plugins: { [options.name]: options.plugin },
-        languageOptions: options.languageOptions ?? {},
         // Most disable directives target oxlint's own rules, which this pass never runs.
         linterOptions: { reportUnusedDisableDirectives: false },
         rules: ruleEntries,
