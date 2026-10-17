@@ -1,9 +1,11 @@
-import { readdirSync } from 'node:fs'
+import { cpSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { expect, test } from 'vite-plus/test'
 import { ROOT, runOxlint } from './oxlint.ts'
 
 const FIXTURES = join(ROOT, 'tests/fixtures')
+// As deep as `FIXTURES`, so relative imports in a copied `plugin.mjs` still resolve.
+const SCRATCH = join(ROOT, 'tests/.scratch')
 
 for (const group of readdirSync(FIXTURES)) {
   const dir = join(FIXTURES, group)
@@ -16,5 +18,39 @@ for (const group of readdirSync(FIXTURES)) {
     test(`fixture: ${group}/${file}`, async () => {
       await expect(runOxlint(dir, [input])).toMatchFileSnapshot(output(`${base}.md`))
     })
+
+    test(`fixture: ${group}/${file} --fix`, async () => {
+      const original = readFileSync(join(dir, input), 'utf8')
+      const fixed = fixUntilStable(group, input, original, '--fix')
+      const suggested = fixUntilStable(group, input, original, '--fix-suggestions')
+
+      await expectOutput(output(`${base}.fixed${extname(file)}`), fixed, original)
+      await expectOutput(output(`${base}.suggested${extname(file)}`), suggested, fixed)
+    })
   }
+}
+
+// ESLint applies fixes in up to 10 passes, oxlint in one per run.
+function fixUntilStable(group: string, input: string, text: string, flag: string): string {
+  for (let pass = 0; pass < 10; pass++) {
+    const next = fix(group, input, text, flag)
+    if (next === text) return text
+    text = next
+  }
+  throw new Error(`${input} still changes after 10 runs of oxlint ${flag}`)
+}
+
+function fix(group: string, input: string, text: string, flag: string): string {
+  const dir = join(SCRATCH, group)
+  rmSync(dir, { recursive: true, force: true })
+  cpSync(join(FIXTURES, group), dir, { recursive: true })
+  writeFileSync(join(dir, input), text)
+  runOxlint(dir, [flag, input])
+  return readFileSync(join(dir, input), 'utf8')
+}
+
+// An output is only kept when it differs from the previous step, so most fixtures have none.
+async function expectOutput(path: string, text: string, previous: string): Promise<void> {
+  if (text === previous) expect(existsSync(path), `${path} is stale`).toBe(false)
+  else await expect(text).toMatchFileSnapshot(path)
 }

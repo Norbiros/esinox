@@ -1,5 +1,5 @@
-import type { Context, Diagnostic, Plugin, Range, Rule } from '@oxlint/plugins'
-import type { ESLint } from 'eslint'
+import type { Context, Diagnostic, FixFn, Plugin, Range, Rule } from '@oxlint/plugins'
+import type { ESLint, Rule as ESLintRule } from 'eslint'
 import { readFileSync } from 'node:fs'
 import { extname } from 'node:path'
 import { Linter } from 'eslint'
@@ -35,7 +35,11 @@ export function createEsinoxPlugin(options: EsinoxOptions): Plugin {
   for (const [ruleName, rule] of Object.entries(options.plugin.rules ?? {})) {
     const ruleId = `${options.name}/${ruleName}`
     rules[ruleName] = {
-      meta: { schema: rule.meta?.schema },
+      meta: {
+        schema: rule.meta?.schema,
+        fixable: rule.meta?.fixable,
+        hasSuggestions: rule.meta?.hasSuggestions,
+      },
       create(context) {
         const current = enterBatch(context, options, ruleId)
         return {
@@ -163,7 +167,17 @@ function toDiagnostic(message: Linter.LintMessage, lineStarts: number[]): Actual
     // Required by the types; ignored when `actualRange` is supported.
     loc: { line: 1, column: 0 },
     actualRange: [start, end],
+    // ESLint ranges index the same text as `actualRange`, so they need no conversion.
+    fix: message.fix && toFixFn(message.fix),
+    suggest: message.suggestions?.map((suggestion) => ({
+      desc: suggestion.desc,
+      fix: toFixFn(suggestion.fix),
+    })),
   }
+}
+
+function toFixFn({ range, text }: ESLintRule.Fix): FixFn {
+  return (fixer) => fixer.replaceTextRange(range, text)
 }
 
 // `actualText` is the editor buffer, exposed by the Norbiros/oxc build. oxlint offsets exclude a BOM.

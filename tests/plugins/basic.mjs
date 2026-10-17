@@ -2,18 +2,39 @@
 export default {
   rules: {
     'no-foo': {
+      meta: { fixable: 'code' },
       create: (context) => ({
         Identifier(node) {
-          if (node.name === 'foo') context.report({ node, message: 'Unexpected foo.' })
+          if (node.name === 'foo')
+            context.report({
+              node,
+              message: 'Unexpected foo.',
+              fix: (fixer) => fixer.replaceText(node, 'bar'),
+            })
         },
       }),
     },
     'no-name': {
-      meta: { schema: [{ type: 'string' }] },
+      meta: {
+        schema: [{ type: 'string' }],
+        hasSuggestions: true,
+        messages: { unexpected: 'Unexpected {{name}}.', rename: 'Rename to {{name}}2.' },
+      },
       create: (context) => ({
         Identifier(node) {
           if (node.name === context.options[0])
-            context.report({ node, message: `Unexpected ${node.name}.` })
+            context.report({
+              node,
+              messageId: 'unexpected',
+              data: { name: node.name },
+              suggest: [
+                {
+                  messageId: 'rename',
+                  data: { name: node.name },
+                  fix: (fixer) => fixer.insertTextAfter(node, '2'),
+                },
+              ],
+            })
         },
       }),
     },
