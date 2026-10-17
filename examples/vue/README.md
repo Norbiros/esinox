@@ -1,9 +1,9 @@
 # Vue example
 
-`eslint-plugin-vue` template rules running inside oxlint through esinoxc. `esinox.mjs` wraps the plugin, `.oxlintrc.json` enables its rules under the `vue-eslint/` alias.
+`eslint-plugin-vue` template rules running inside oxlint through esinoxc. `esinox.ts` wraps the plugin, `oxlint.config.ts` loads it under the `vue-eslint/` alias and enables its `flat/recommended` preset.
 
 ```sh
 pnpm lint
 ```
 
-`output.snap.md` is the expected output, checked by `tests/examples.test.ts`.
+`output.md` is the expected output, checked by `tests/examples.test.ts`.

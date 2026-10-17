@@ -4,7 +4,6 @@ import { expect, test } from 'vite-plus/test'
 import { ROOT, runOxlint } from './oxlint.ts'
 
 const FIXTURES = join(ROOT, 'tests/fixtures')
-// As deep as `FIXTURES`, so relative imports in a copied `plugin.mjs` still resolve.
 const SCRATCH = join(ROOT, 'tests/.scratch')
 
 for (const group of readdirSync(FIXTURES)) {

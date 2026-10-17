@@ -1,9 +1,0 @@
-{
-  "categories": { "correctness": "off" },
-  "jsPlugins": [{ "name": "vue-eslint", "specifier": "./plugin.ts" }],
-  "rules": {
-    "vue-eslint/html-self-closing": "error",
-    "vue-eslint/no-v-html": "error",
-    "vue-eslint/prefer-import-from-vue": "error"
-  }
-}

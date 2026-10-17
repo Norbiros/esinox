@@ -10,6 +10,6 @@ for (const example of readdirSync(EXAMPLES, { withFileTypes: true })) {
 
   test(`example: ${example.name}`, async () => {
     const dir = join(EXAMPLES, example.name)
-    await expect(runOxlint(dir)).toMatchFileSnapshot(join(dir, 'output.snap.md'))
+    await expect(runOxlint(dir)).toMatchFileSnapshot(join(dir, 'output.md'))
   })
 }

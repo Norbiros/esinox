@@ -5,5 +5,5 @@ const html = ref('<b>Hello</b>')
 </script>
 
 <template>
-  <div v-html="html"/>
+  <div v-html="html" />
 </template>

@@ -4,7 +4,7 @@
 # stdout
 ```
 
-  x vue-eslint(html-self-closing): Require self-closing on HTML elements (<div>).
+  ! vue-eslint(html-self-closing): Require self-closing on HTML elements (<div>).
    ,-[input/template.vue:8:22]
  7 | <template>
  8 |   <div v-html="html"></div>
@@ -12,7 +12,7 @@
  9 | </template>
    `----
 
-  x vue-eslint(no-v-html): 'v-html' directive can lead to XSS attack.
+  ! vue-eslint(no-v-html): 'v-html' directive can lead to XSS attack.
    ,-[input/template.vue:8:8]
  7 | <template>
  8 |   <div v-html="html"></div>
@@ -28,8 +28,8 @@
  3 | 
    `----
 
-Found 0 warnings and 3 errors.
-Finished in Xms on 1 file with 3 rules using 1 threads.
+Found 2 warnings and 1 error.
+Finished in Xms on 1 file with 116 rules using 1 threads.
 ```
 
 # stderr
