@@ -4,16 +4,34 @@ import { readFileSync } from 'node:fs'
 import { extname } from 'node:path'
 import { Linter } from 'eslint'
 
-export interface EsinoxOptions {
+export interface EsinoxOptions<P extends ESLint.Plugin = ESLint.Plugin> {
   /** Must match the alias the plugin is loaded under in `jsPlugins`. */
   name: string
-  plugin: ESLint.Plugin
+  plugin: P
   /**
    * ESLint config the plugin needs to run, usually its base preset. Rules should not be
    * configured here, but in the oxlint config directly.
    */
   config?: Linter.Config[]
 }
+
+export interface EsinoxPlugin<P extends ESLint.Plugin = ESLint.Plugin> extends Plugin {
+  /** The wrapped plugin's flat configs, with its rules renamed to `name`, for oxlint's `extends`. */
+  configs: Record<FlatConfigName<P>, OxlintRulesConfig>
+}
+
+export interface OxlintRulesConfig {
+  rules: Linter.RulesRecord
+}
+
+type ConfigsOf<P extends ESLint.Plugin> = NonNullable<P['configs']>
+
+// Legacy (eslintrc) configs name plugins by string, so their rules cannot be mapped.
+type FlatConfigName<P extends ESLint.Plugin> = string extends keyof ConfigsOf<P>
+  ? string
+  : {
+      [K in keyof ConfigsOf<P>]: ConfigsOf<P>[K] extends Linter.Config | Linter.Config[] ? K : never
+    }[keyof ConfigsOf<P>]
 
 // Whole-file offsets from oxc#20501, not in the published types yet.
 type ActualRangeDiagnostic = Diagnostic & { actualRange: Range }
@@ -29,7 +47,9 @@ interface Batch {
 // at the first `Program` visit.
 let batch: Batch | undefined
 
-export function createEsinoxPlugin(options: EsinoxOptions): Plugin {
+export function createEsinoxPlugin<P extends ESLint.Plugin>(
+  options: EsinoxOptions<P>,
+): EsinoxPlugin<P> {
   const rules: Record<string, Rule> = {}
 
   for (const [ruleName, rule] of Object.entries(options.plugin.rules ?? {})) {
@@ -54,7 +74,52 @@ export function createEsinoxPlugin(options: EsinoxOptions): Plugin {
     }
   }
 
-  return { meta: { name: options.name }, rules }
+  return { meta: { name: options.name }, rules, configs: toOxlintConfigs(options) }
+}
+
+function toOxlintConfigs<P extends ESLint.Plugin>(
+  options: EsinoxOptions<P>,
+): EsinoxPlugin<P>['configs'] {
+  // Rules of the base config already run inside ESLint; enabling them under the alias too would
+  // run them twice.
+  const baseRules = new Set(Object.keys(toAliasedRules(options, options.config ?? [])))
+  const configs: Record<string, OxlintRulesConfig> = {}
+
+  for (const [configName, config] of Object.entries(options.plugin.configs ?? {})) {
+    const rules = Object.entries(toAliasedRules(options, [config].flat()))
+    configs[configName] = {
+      rules: Object.fromEntries(rules.filter(([ruleId]) => !baseRules.has(ruleId))),
+    }
+  }
+  // Keys come from `plugin.configs`. Legacy configs are included too, with no rules, but left out
+  // of the type.
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+  return configs as EsinoxPlugin<P>['configs']
+}
+
+// A flat config names the plugin by the key it registers it under, e.g. `vue` in `vue/no-v-html`.
+function toAliasedRules(
+  options: EsinoxOptions,
+  configs: Array<Linter.Config | Linter.LegacyConfig>,
+): Linter.RulesRecord {
+  const prefixes = new Set(
+    configs.flatMap((config) =>
+      Object.entries(config.plugins ?? {})
+        .filter(([, plugin]) => plugin === options.plugin)
+        .map(([prefix]) => prefix),
+    ),
+  )
+
+  const rules: Linter.RulesRecord = {}
+  for (const config of configs) {
+    for (const [ruleId, entry] of Object.entries(config.rules ?? {})) {
+      const slash = ruleId.lastIndexOf('/')
+      if (entry !== undefined && prefixes.has(ruleId.slice(0, slash))) {
+        rules[`${options.name}/${ruleId.slice(slash + 1)}`] = entry
+      }
+    }
+  }
+  return rules
 }
 
 function enterBatch(context: Context, options: EsinoxOptions, ruleId: string): Batch {

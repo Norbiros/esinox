@@ -14,5 +14,6 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src", "tests", "*.ts"]
 }

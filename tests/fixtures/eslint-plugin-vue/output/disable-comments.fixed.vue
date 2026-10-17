@@ -9,5 +9,5 @@ import { ref } from '@vue/runtime-core'
   <!-- eslint-disable vue-eslint/html-self-closing -->
   <span></span>
   <!-- eslint-enable vue-eslint/html-self-closing -->
-  <span/>
+  <span />
 </template>

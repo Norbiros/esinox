@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite-plus'
 
-// Kept byte for byte and linted by their own configs in the tests.
 const fixtureInputs = ['tests/fixtures/*/{input,output}/*']
 
 export default defineConfig({
@@ -16,12 +15,15 @@ export default defineConfig({
     ],
   },
   lint: {
-    // Example sources are intentionally faulty.
-    ignorePatterns: ['examples/*/src/**', ...fixtureInputs],
+    ignorePatterns: ['examples/**', ...fixtureInputs],
     categories: { correctness: 'error', suspicious: 'error', perf: 'error' },
     options: { typeAware: true, typeCheck: true, denyWarnings: true },
   },
-  fmt: { singleQuote: true, semi: false, ignorePatterns: ['**/*.snap.md', ...fixtureInputs] },
+  fmt: {
+    singleQuote: true,
+    semi: false,
+    ignorePatterns: ['examples/*/output.md', ...fixtureInputs],
+  },
   test: { include: ['tests/**/*.test.ts'], globalSetup: ['tests/global-setup.ts'] },
   staged: {
     '*': 'vp check --fix',

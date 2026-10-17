@@ -6,3 +6,6 @@ dist
 *.tgz
 .env*
 !.env.example
+
+# Project specific
+tests/.scratch
