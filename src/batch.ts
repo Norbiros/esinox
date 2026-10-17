@@ -64,7 +64,7 @@ function lintBatch(context: Context, batch: Batch): Map<string, ActualRangeDiagn
   for (const [options, rules] of batch.rules) {
     // A fatal error belongs to no rule, so it is reported through the first one to stay visible.
     const [firstRuleId] = rules.keys()
-    for (const message of runEslint(context.cwd, batch.filename, text, options, rules)) {
+    for (const message of runEslint(context, batch.filename, text, options, rules)) {
       const ruleId = message.fatal === true ? firstRuleId : message.ruleId
       if (ruleId === null || ruleId === undefined) continue
       const list = diagnostics.get(ruleId) ?? []
@@ -96,7 +96,7 @@ function claimFileRun(filename: string, section: string, text: string): boolean 
 }
 
 function runEslint(
-  cwd: string,
+  context: Context,
   filename: string,
   text: string,
   options: EsinoxOptions,
@@ -107,7 +107,7 @@ function runEslint(
     ruleEntries[ruleId] = ['error', ...ruleOptions]
   }
 
-  const linter = new Linter({ cwd })
+  const linter = new Linter({ cwd: context.cwd })
   return linter.verify(
     text,
     [
@@ -115,6 +115,8 @@ function runEslint(
       {
         files: [`**/*${extname(filename)}`],
         plugins: { [options.name]: options.plugin },
+        languageOptions: { globals: context.languageOptions.globals },
+        settings: context.settings,
         // Most disable directives target oxlint's own rules, which this pass never runs.
         linterOptions: { reportUnusedDisableDirectives: false },
         rules: ruleEntries,

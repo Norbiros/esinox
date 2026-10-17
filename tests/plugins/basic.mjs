@@ -37,6 +37,24 @@ export default {
         },
       }),
     },
+    'no-undef': {
+      create: (context) => ({
+        'Program:exit'(node) {
+          for (const reference of context.sourceCode.getScope(node).through)
+            context.report({
+              node: reference.identifier,
+              message: `'${reference.identifier.name}' is not defined.`,
+            })
+        },
+      }),
+    },
+    'report-setting': {
+      create: (context) => ({
+        Program(node) {
+          context.report({ node, message: `Setting: ${context.settings.basic?.greeting}.` })
+        },
+      }),
+    },
     // Like `unicorn/no-abusive-eslint-disable`, which reports before the first column.
     'no-file-start': {
       create: (context) => ({

@@ -20,7 +20,7 @@
    `----
 
 Found 0 warnings and 2 errors.
-Finished in Xms on 1 file with 3 rules using 1 threads.
+Finished in Xms on 1 file with 5 rules using 1 threads.
 ```
 
 # stderr

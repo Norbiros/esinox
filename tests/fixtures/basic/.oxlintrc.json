@@ -2,11 +2,17 @@
   "categories": { "correctness": "off" },
   "jsPlugins": [{ "name": "basic", "specifier": "./plugin.mjs" }],
   "rules": { "basic/no-foo": "error" },
+  "settings": { "basic": { "greeting": "hello" } },
   "overrides": [
     {
       "files": ["input/options.js"],
       "rules": { "basic/no-foo": "off", "basic/no-name": ["error", "bar"] }
     },
-    { "files": ["input/negative-column.js"], "rules": { "basic/no-file-start": "error" } }
+    { "files": ["input/negative-column.js"], "rules": { "basic/no-file-start": "error" } },
+    {
+      "files": ["input/settings-and-globals.js"],
+      "globals": { "useState": "readonly" },
+      "rules": { "basic/no-undef": "error", "basic/report-setting": "error" }
+    }
   ]
 }
