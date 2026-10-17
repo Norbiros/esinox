@@ -13,11 +13,13 @@ export default defineConfig({
     ],
   },
   lint: {
+    // Intentionally faulty inputs, linted by their own configs in the tests.
+    ignorePatterns: ['examples/*/src/**', 'tests/fixtures/*/*.js', 'tests/fixtures/*/*.vue'],
     categories: { correctness: 'error', suspicious: 'error', perf: 'error' },
     options: { typeAware: true, typeCheck: true, denyWarnings: true },
   },
-  fmt: { singleQuote: true, semi: false },
-  test: { include: ['tests/**/*.test.ts'] },
+  fmt: { singleQuote: true, semi: false, ignorePatterns: ['**/*.snap.md'] },
+  test: { include: ['tests/**/*.test.ts'], globalSetup: ['tests/global-setup.ts'] },
   staged: {
     '*': 'vp check --fix',
   },

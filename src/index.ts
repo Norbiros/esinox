@@ -134,7 +134,7 @@ function runEslint(
       {
         files: [`**/*${extname(filename)}`],
         plugins: { [options.name]: options.plugin },
-        languageOptions: options.languageOptions,
+        languageOptions: options.languageOptions ?? {},
         rules: ruleEntries,
       },
     ],

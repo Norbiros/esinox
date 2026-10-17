@@ -1,0 +1,27 @@
+# Exit code
+1
+
+# stdout
+```
+
+  x mini(no-foo): Unexpected foo.
+   ,-[no-foo.js:1:7]
+ 1 | const foo = 1
+   :       ^^^
+ 2 | console.log(foo)
+   `----
+
+  x mini(no-foo): Unexpected foo.
+   ,-[no-foo.js:2:13]
+ 1 | const foo = 1
+ 2 | console.log(foo)
+   :             ^^^
+   `----
+
+Found 0 warnings and 2 errors.
+Finished in Xms on 1 file with 2 rules using 1 threads.
+```
+
+# stderr
+```
+```

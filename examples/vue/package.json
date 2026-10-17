@@ -6,9 +6,11 @@
     "lint": "oxlint"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "catalog:examples",
     "esinoxc": "workspace:*",
     "eslint-plugin-vue": "catalog:examples",
     "oxlint": "catalog:toolchain",
+    "typescript": "catalog:examples",
     "vue-eslint-parser": "catalog:examples"
   }
 }

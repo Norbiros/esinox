@@ -43,7 +43,8 @@
     "publint": "catalog:publish",
     "typescript": "catalog:toolchain",
     "vite": "catalog:toolchain",
-    "vite-plus": "catalog:toolchain"
+    "vite-plus": "catalog:toolchain",
+    "vue-eslint-parser": "catalog:examples"
   },
   "peerDependencies": {
     "oxlint": ">=1.85.0"

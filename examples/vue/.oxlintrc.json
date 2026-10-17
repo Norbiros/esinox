@@ -2,6 +2,10 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "jsPlugins": [{ "name": "vue-eslint", "specifier": "./esinox.mjs" }],
   "rules": {
-    "vue-eslint/no-v-html": "error"
+    "vue-eslint/attribute-hyphenation": "error",
+    "vue-eslint/no-template-target-blank": "error",
+    "vue-eslint/no-unused-vars": "error",
+    "vue-eslint/no-v-html": "warn",
+    "vue-eslint/require-v-for-key": "error"
   }
 }
