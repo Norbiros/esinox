@@ -17,6 +17,14 @@ export default {
         },
       }),
     },
+    // Like `unicorn/no-abusive-eslint-disable`, which reports before the first column.
+    'no-file-start': {
+      create: (context) => ({
+        Program() {
+          context.report({ loc: { line: 1, column: -1 }, message: 'Unexpected file start.' })
+        },
+      }),
+    },
     'no-marquee': {
       create: (context) =>
         context.sourceCode.parserServices.defineTemplateBodyVisitor?.({

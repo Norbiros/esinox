@@ -3,6 +3,10 @@
   "jsPlugins": [{ "name": "mini", "specifier": "./plugin.mjs" }],
   "rules": { "mini/no-foo": "error" },
   "overrides": [
-    { "files": ["options.js"], "rules": { "mini/no-foo": "off", "mini/no-name": ["error", "bar"] } }
+    {
+      "files": ["options.js"],
+      "rules": { "mini/no-foo": "off", "mini/no-name": ["error", "bar"] }
+    },
+    { "files": ["negative-column.js"], "rules": { "mini/no-file-start": "error" } }
   ]
 }

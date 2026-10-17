@@ -85,11 +85,14 @@ function lintBatch(context: Context, current: Batch): Map<string, ActualRangeDia
 
   const lineStarts = computeLineStarts(text)
   for (const [options, rules] of current.rules) {
+    // A fatal error belongs to no rule, so it is reported through the first one to stay visible.
+    const [firstRuleId] = rules.keys()
     for (const message of runEslint(context.cwd, current.filename, text, options, rules)) {
-      if (message.ruleId === null) continue
-      const list = diagnostics.get(message.ruleId) ?? []
+      const ruleId = message.fatal === true ? firstRuleId : message.ruleId
+      if (ruleId === null || ruleId === undefined) continue
+      const list = diagnostics.get(ruleId) ?? []
       list.push(toDiagnostic(message, lineStarts))
-      diagnostics.set(message.ruleId, list)
+      diagnostics.set(ruleId, list)
     }
   }
   return diagnostics
@@ -135,6 +138,8 @@ function runEslint(
         files: [`**/*${extname(filename)}`],
         plugins: { [options.name]: options.plugin },
         languageOptions: options.languageOptions ?? {},
+        // Most disable directives target oxlint's own rules, which this pass never runs.
+        linterOptions: { reportUnusedDisableDirectives: false },
         rules: ruleEntries,
       },
     ],
@@ -173,6 +178,7 @@ function computeLineStarts(text: string): number[] {
   return starts
 }
 
+// Some rules report before the first column, and a negative offset makes oxlint fail the whole file.
 function toOffset(lineStarts: number[], line: number, column: number): number {
-  return (lineStarts[line - 1] ?? 0) + column - 1
+  return Math.max(0, (lineStarts[line - 1] ?? 0) + column - 1)
 }
